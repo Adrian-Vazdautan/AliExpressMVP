@@ -1,24 +1,20 @@
-import { Group, Button, TextInput, Box, Container, Text, Stack, UnstyledButton } from '@mantine/core';
+import { Group, Button, TextInput, Box, Container, Text, UnstyledButton, Center } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { IconShoppingCart, IconPackage, IconUserCircle, IconLayoutGrid } from '@tabler/icons-react';
 
 export function HeaderSearch() {
-  // Проверяем, мобильное ли это устройство (обычно всё, что меньше 768px)
   const isMobile = useMediaQuery('(max-width: 768px)');
+  const headerHeight = isMobile ? 54 : 70; // Фиксированная высота для выравнивания
 
   return (
-    <Container size="lg" px={isMobile ? 4 : 0} py={isMobile ? 4 : 8}>
-      <Box 
-        bg="#ff0036" 
-        py={isMobile ? 4 : 6} 
-        px={isMobile ? 8 : 16}
-        style={{ borderRadius: isMobile ? '8px' : '12px' }} 
-      >
-        <Group justify="space-between" wrap="nowrap" gap={isMobile ? 4 : 'md'}>
+    // Внешний Box дает красный фон на всю ширину
+    <Box bg="#ff0036" style={{borderRadius:8, marginBottom: 10, marginTop: 10}}>
+      <Container size="lg" px={isMobile ? 8 : 'md'}>
+        <Group h={headerHeight} justify="space-between" wrap="nowrap" gap={isMobile ? 8 : 'md'}>
           
-          {/* 1. Логотип - на мобилках можно сократить или оставить только иконку */}
+          {/* 1. Логотип */}
           {!isMobile && (
-            <Text c="white" fw={900} style={{ fontSize: '22px', letterSpacing: '-1px', cursor: 'pointer' }}>
+            <Text c="white" fw={900} style={{ fontSize: '22px', letterSpacing: '-1px', cursor: 'pointer', flexShrink: 0 }}>
               AliExpress
             </Text>
           )}
@@ -33,9 +29,10 @@ export function HeaderSearch() {
             radius="md"
             style={{ flex: 1 }}
             styles={{
+              root: { alignSelf: 'center' },
               input: { 
-                paddingRight: isMobile ? '45px' : '90px', // Меньше отступ для маленькой кнопки
-                height: isMobile ? '36px' : '44px',
+                paddingRight: isMobile ? '40px' : '90px',
+                height: isMobile ? '38px' : '44px',
                 border: 'none',
                 fontSize: '14px'
               },
@@ -46,59 +43,54 @@ export function HeaderSearch() {
                 color="#b5f045" 
                 c="black" 
                 radius="xl" 
-                h={isMobile ? 30 : 36}
-                px={isMobile ? 12 : 20}
+                h={isMobile ? 32 : 36}
+                px={isMobile ? 10 : 20}
                 fw={700}
                 style={{ fontSize: isMobile ? '11px' : '13px' }}
               >
-                {isMobile ? '🔍' : 'Найти'}
+                Найти
               </Button>
             }
           />
 
           {/* 4. Правое меню */}
-          <Group gap={isMobile ? 2 : 4} wrap="nowrap">
+          <Group gap={0} h="100%" wrap="nowrap" style={{ flexShrink: 0 }}>
             <HeaderAction icon={<IconPackage size={22} />} label="Заказы" isMobile={isMobile} />
             <HeaderAction icon={<IconShoppingCart size={22} />} label="Корзина" isMobile={isMobile} />
             <HeaderAction icon={<IconUserCircle size={22} />} label="Войти" isMobile={isMobile} />
           </Group>
 
         </Group>
-      </Box>
-    </Container>
+      </Container>
+    </Box>
   );
 }
 
 function HeaderAction({ icon, label, isMobile }: { icon: React.ReactNode; label: string; isMobile: boolean }) {
-  const baseRed = 'rgba(0, 0, 0, .1)';
-  const hoverRed = 'rgba(200, 30, 30, 1)';
-
   return (
     <UnstyledButton
-      p={isMobile ? 4 : 6}
+      h="100%" // Кнопка занимает ВСЮ высоту хедера
+      px={isMobile ? 8 : 12}
       style={{
-        borderRadius: '8px',
-        backgroundColor: baseRed,
-        transition: 'background-color 0.2s ease',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        minWidth: isMobile ? '40px' : '65px'
+        justifyContent: 'center',
+        transition: 'background-color 0.2s ease',
+        // Убираем фоновый цвет по умолчанию, чтобы не было "квадратов"
       }}
-      onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = hoverRed)}
-      onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = baseRed)}
+      // Используем инлайновые стили для ховера, так как ты работаешь без CSS модулей сейчас
+      onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'rgba(0, 0, 0, 0.1)')}
+      onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
     >
-      <Stack gap={0} align="center">
-        <Box c="white" style={{ height: isMobile ? 20 : 22, display: 'flex', alignItems: 'center' }}>
-          {icon}
-        </Box>
-        {/* Скрываем текст на мобилках, чтобы сэкономить место */}
-        {!isMobile && (
-          <Text c="white" style={{ fontSize: '10px', marginTop: '1px' }} fw={600}>
-            {label}
-          </Text>
-        )}
-      </Stack>
+      <Center c="white">
+        {icon}
+      </Center>
+      {!isMobile && (
+        <Text c="white" style={{ fontSize: '11px', marginTop: '4px' }} fw={600}>
+          {label}
+        </Text>
+      )}
     </UnstyledButton>
   );
 }

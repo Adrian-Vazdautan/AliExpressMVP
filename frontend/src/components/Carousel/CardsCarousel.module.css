@@ -1,0 +1,38 @@
+.card {
+  height: 350px; /* Уменьшили высоту, чтобы было компактнее на iMac */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end; /* Текст внизу */
+  align-items: flex-start;
+  background-size: cover;
+  background-position: center;
+  border-radius: 16px; /* Более скругленные углы в стиле нового Али */
+  transition: transform 150ms ease;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Затемнение внизу для читаемости текста */
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.7) 100%);
+  z-index: 1;
+}
+
+.card > div {
+  position: relative;
+  z-index: 2; /* Поверх затемнения */
+}
+
+.title {
+  color: white;
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  font-size: 28px;
+  margin-bottom: 10px;
+}

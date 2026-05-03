@@ -1,6 +1,8 @@
-import { MantineProvider, createTheme } from '@mantine/core';
+import { MantineProvider, createTheme, Container, Stack } from '@mantine/core';
 import { HeaderSearch } from './components/Header/HeaderSearch';
+import { CardsCarousel } from './components/Carousel/CardsCarousel';
 import '@mantine/core/styles.css'; 
+import '@mantine/carousel/styles.css';
 import './App.css';
 
 const theme = createTheme({
@@ -11,8 +13,15 @@ const theme = createTheme({
 function App() {
   return (
     <MantineProvider theme={theme} defaultColorScheme="light">
-      <HeaderSearch />
-      {/* Сюда потом добавим сетку товаров */}
+      {/* Хедер без контейнера снаружи, чтобы фон был на всю ширину */}
+      
+      
+      {/* Глобальный контейнер для всего, что ниже хедера */}
+      <Container size="xl">
+        <HeaderSearch />
+        <CardsCarousel />
+        {/* Сюда потом добавишь остальной контент */}
+      </Container>
     </MantineProvider>
   );
 }
